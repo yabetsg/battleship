@@ -6,7 +6,6 @@ export default class Ship{
         this.column = column;
     }
     hit(hitPosition){
-        
         if(this.position.includes(hitPosition)&& !(this.hits.includes(hitPosition))){
             this.hits.push(hitPosition);
         }
