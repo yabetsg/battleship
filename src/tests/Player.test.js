@@ -5,7 +5,9 @@ describe('player class test',()=>{
     beforeEach(()=>{
         player = new Player();
     })
-    it('',()=>{
-        expect(player.autoPlay()).toEqual(5)
+    it('returns whole number',()=>{
+        let randomWholeDigit= player.autoPlay();
+        let whole = ((randomWholeDigit*10)%10);
+        expect(whole).toEqual(0)
     })
 })

@@ -1,2 +1,3 @@
-import { createBoard } from "./scripts/dom";
+import { createBoard, clickEvent } from "./scripts/dom";
+import { runGame } from "./scripts/main";
 

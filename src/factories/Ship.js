@@ -4,6 +4,7 @@ export default class Ship{
         this.hits = [];
         this.position = position;
         this.column = column;
+       
     }
     hit(hitPosition){
         if(this.position.includes(hitPosition)&& !(this.hits.includes(hitPosition))){

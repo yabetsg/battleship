@@ -12,21 +12,20 @@ describe('GameBoard test',()=>{
         board.initialize();
         expect(board.board[0][0]).toEqual(0);
     });
+    it('check placement of ship after intitialization',()=>{
+        board.initialize();
+        board.placeShip(new Ship(3,0,[0,1,2]));
+        expect(board.board[0][1]).toEqual('x');
+    });
     it('test already made board',()=>{
         expect(board.board[1][0]).toEqual(8);
     });
    
-    it('test placeShip method',()=>{
-        board.placeShip(new Ship(3,1,[1,2,3]))
-        expect(board.board[1][1]).toEqual('x');
-        expect(board.board[1][2]).toEqual('x');
-        expect(board.board[1][3]).toEqual('x');
-    })
     it('test hit attack method',()=>{
-        board.placeShip(new Ship(3,1,[1,2,3]))
-        board.recieveAttack(1,1);
-        board.recieveAttack(1,2);
-        expect(board.hits).toEqual([[],[1,2]]);
+        board.placeShip(new Ship(3,0,[1,2,3]))
+        board.recieveAttack(0,1);
+        board.recieveAttack(0,2);
+        expect(board.hits).toEqual([[1,2]]);
     })
     it('test missed attack method',()=>{
         board.placeShip(new Ship(3,1,[1,2,3]))
