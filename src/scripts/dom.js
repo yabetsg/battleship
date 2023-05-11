@@ -8,9 +8,10 @@ export const createBoard = (newBoard,id)=>{
         e.forEach(e=>{
             const div = document.createElement('div');
             div.classList.add('grids'); 
+            div.setAttribute('value',e);
             container.appendChild(div);
             div.value = e;
-            div.innerText = e;
+            div.textContent = e;
             
         });
     });
@@ -24,9 +25,10 @@ export const updateBoard = (newBoard,containerID,gridID)=>{
     board.forEach(e=>{
         e.forEach(e=>{
             const div = document.createElement('div');
-            div.classList.add('grids'); 
+            div.classList.add('grids');
+              div.setAttribute('e',"e");
             container.appendChild(div);
-            div.value = e;
+           
             div.innerText = e;
             
         });
@@ -49,6 +51,7 @@ export const clickEvent = (player,ai)=>{
         if(player.turn){
              ai.turn = true;
              player.turn = false;
+            
             console.log('player: '+e.target.value);
              const event = new Event('click');
             element.dispatchEvent(event);
@@ -61,12 +64,76 @@ export const clickEvent = (player,ai)=>{
         
     }));
 }
-export const renderShips = (gameboard) =>{
-    const ship = new Ship(3,0,[1,2,3]);
+const findElement= (ship,event,color)=>{
+    switch(ship.length){
+        case 2: {
+            const currentElement = document.querySelector(`div[value="${event.target.value}"]`);
+            const nextElement = document.querySelector(`div[value="${event.target.value+1}"]`);
+            currentElement.style.backgroundColor = color;
+             nextElement.style.backgroundColor = color;
+            }
+             break;
+        case 3:{
+            const currentElement = document.querySelector(`div[value="${event.target.value}"]`);
+            const secondElement = document.querySelector(`div[value="${event.target.value+1}"]`);
+            const thirdElement = document.querySelector(`div[value="${event.target.value+2}"]`);
+            currentElement.style.backgroundColor = color;
+            secondElement.style.backgroundColor = color;
+            thirdElement.style.backgroundColor = color;
+        }
+         break;
+         case 4: {
+            const currentElement = document.querySelector(`div[value="${event.target.value}"]`);
+            const secondElement = document.querySelector(`div[value="${event.target.value+1}"]`);
+            const thirdElement = document.querySelector(`div[value="${event.target.value+2}"]`);
+            const fourthElement = document.querySelector(`div[value="${event.target.value+3}"]`);
+            currentElement.style.backgroundColor = color;
+            secondElement.style.backgroundColor = color;
+            thirdElement.style.backgroundColor = color;
+            fourthElement.style.backgroundColor = color;
+         }
+         break;
+         case 5: {
+            const currentElement = document.querySelector(`div[value="${event.target.value}"]`);
+            const secondElement = document.querySelector(`div[value="${event.target.value+1}"]`);
+            const thirdElement = document.querySelector(`div[value="${event.target.value+2}"]`);
+            const fourthElement = document.querySelector(`div[value="${event.target.value+3}"]`);
+            const fifthElement = document.querySelector(`div[value="${event.target.value+4}"]`);
+            currentElement.style.backgroundColor = color;
+            secondElement.style.backgroundColor = color;
+            thirdElement.style.backgroundColor = color;
+            fourthElement.style.backgroundColor = color;
+            fifthElement.style.backgroundColor = color;
+         }
+    }
+}
+
+export const renderShips =  (gameboard,length) =>{
+    const ship = new Ship(length,0,[1,2,3]);
     gameboard.placeShip(ship);
     const grids = document.querySelectorAll('#primary-container>.grids');
     grids.forEach(element=>element.addEventListener('mouseover',(e)=>{
-        // console.log('x');
+        
+            findElement(ship,e,'blue');
+            // element.addEventListener('click',(e)=>{
+            //     findElement(ship,e,'yellow');
+            //      return;
+            // })
+            
+            
+        
     }));
+    
+
+ 
+   grids.forEach(element=>element.addEventListener('click',(e)=>{
+    findElement(ship,e,'yellow');
+    return;
+   }))
+    grids.forEach(element=>element.addEventListener('mouseout',(e)=>{
+       findElement(ship,e,'black');
+    }));     
+    
 }
+
 
