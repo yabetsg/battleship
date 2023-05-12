@@ -1,6 +1,6 @@
 import GameBoard from "../factories/GameBoard";
 import Ship from "../factories/Ship";
-export const createBoard = (newBoard,id,className)=>{
+export const createBoard = (newBoard,id,className,direction)=>{
     const container = document.querySelector(id);
     newBoard.initialize();
     let board = newBoard.board;
@@ -8,6 +8,7 @@ export const createBoard = (newBoard,id,className)=>{
         e.forEach(e=>{
             const div = document.createElement('div');
             div.classList.add(className); 
+            div.classList.add(direction); 
             div.setAttribute('value',e);
             container.appendChild(div);
             div.value = e;
@@ -15,8 +16,6 @@ export const createBoard = (newBoard,id,className)=>{
             
         });
     });
-
-    
 }
 export const updateBoard = (newBoard,containerID,gridID)=>{
     removeBoard(containerID,gridID);
@@ -26,6 +25,7 @@ export const updateBoard = (newBoard,containerID,gridID)=>{
         e.forEach(e=>{
             const div = document.createElement('div');
             div.classList.add(gridID); 
+          //  div.classList.add(direction); 
             div.setAttribute('value',e);
             container.appendChild(div);
             div.value = e;
@@ -66,55 +66,23 @@ export const clickEvent = (player,ai)=>{
         
     }));
 }
-const findElement= (ship,event,color)=>{
-    switch(ship.length){
-        case 2: {
-            const currentElement = document.querySelector(`div[value="${event.target.value}"]`);
-            const nextElement = document.querySelector(`div[value="${event.target.value+1}"]`);
-            currentElement.style.backgroundColor = color;
-             nextElement.style.backgroundColor = color;
-             return [event.target.value,event.target.value+1];
-            }
-             break;
-        case 3:{
-            const currentElement = document.querySelector(`.player-grids[value="${event.target.value}"]`);
-            const secondElement = document.querySelector(`.player-grids[value="${event.target.value+1}"]`);
-            const thirdElement = document.querySelector(`.player-grids[value="${event.target.value+2}"]`);
-            currentElement.style.backgroundColor = color;
-            secondElement.style.backgroundColor = color;
-            thirdElement.style.backgroundColor = color;
-            return [event.target.value,event.target.value+1,event.target.value+2];
-        }
-         break;
-         case 4: {
-            const currentElement = document.querySelector(`div[value="${event.target.value}"]`);
-            const secondElement = document.querySelector(`div[value="${event.target.value+1}"]`);
-            const thirdElement = document.querySelector(`div[value="${event.target.value+2}"]`);
-            const fourthElement = document.querySelector(`div[value="${event.target.value+3}"]`);
-            currentElement.style.backgroundColor = color;
-            secondElement.style.backgroundColor = color;
-            thirdElement.style.backgroundColor = color;
-            fourthElement.style.backgroundColor = color;
-            return [event.target.value,event.target.value+1,event.target.value+2,event.target.value+3]
-         }
-         break;
-         case 5: {
-            const currentElement = document.querySelector(`.player-grids[value="${event.target.value}"]`);
-            const secondElement = document.querySelector(`.player-grids[value="${event.target.value+1}"]`);
-            const thirdElement = document.querySelector(`.player-grids[value="${event.target.value+2}"]`);
-            const fourthElement = document.querySelector(`.player-grids[value="${event.target.value+3}"]`);
-            const fifthElement = document.querySelector(`.player-grids[value="${event.target.value+4}"]`);
-            currentElement.style.backgroundColor = color;
-            secondElement.style.backgroundColor = color;
-            thirdElement.style.backgroundColor = color;
-            fourthElement.style.backgroundColor = color;
-            fifthElement.style.backgroundColor = color;
-            return [event.target.value,event.target.value+1,event.target.value+2,event.target.value+3,event.target.value+4];
-         }
+const getCoordinates = (ship,event,color)=>{
+    let coordinate = [];
+    if(ship.length===1){
+        return;
     }
+    for(let i=0;i<=ship.length-1;i++){
+        document.querySelector(`div[value="${event.target.value+i}"]`).style.backgroundColor = color;
+        coordinate.push(event.target.value+i);
+    }
+    return coordinate;
 }
+
 let flag = true;
 export const renderPlayerShips =  (gameboard,length) =>{
+    const grids = document.querySelectorAll('#primary-container>.player-grids');
+    const verticalGrids = document.querySelectorAll('#primary-container>.player-grids');
+    const rotateButton = document.querySelector('#rotate');
     const ship = new Ship(length,0,[1,2,3]);
     if(length===3){
         if(flag){
@@ -125,25 +93,35 @@ export const renderPlayerShips =  (gameboard,length) =>{
     if(length<=0){
         return;
     }
-    const grids = document.querySelectorAll('#primary-container>.player-grids');
+    
     grids.forEach(element=>element.addEventListener('mouseover',(e)=>{
-        
-            findElement(ship,e,'blue');
-            element.addEventListener('click',(e)=>{
-
-               ship.position = findElement(ship,e,'yellow');
+         
+             getCoordinates(ship,e,'blue'); 
+              element.addEventListener('click',(e)=>{
+               ship.position = getCoordinates(ship,e,'yellow');
                ship.column = Math.floor(ship.position[0]/10);
                  gameboard.placeShip(ship);
                  updateBoard(gameboard,'primary-container',"player-grids");
                  renderPlayerShips(gameboard,length-1);
                 
             });
+           
+           
+          
     }));
     
 
     grids.forEach(element=>element.addEventListener('mouseout',(e)=>{
-       findElement(ship,e,'black');
-    }));     
+        getCoordinates(ship,e,'black');
+    }));  
+    
+    rotateButton.addEventListener('click',(e)=>{
+        grids.forEach(element=>{
+           
+            element.classList.toggle('horizontal');
+            element.classList.toggle('vertical');
+        })
+    });
     
 }
 
@@ -164,27 +142,6 @@ export const renderAiShips =  (gameboard) =>{
     gameboard.placeShip(ship4);
     gameboard.placeShip(ship5);
     updateBoard(gameboard,'secondary-container',"ai-grids");
-    const grids = document.querySelectorAll('#secondary-container>.ai-grids');
-    // grids.forEach(element=>{
-        
-    // });
-    // grids.forEach(element=>element.addEventListener('mouseover',(e)=>{
-        
-    //         findElement(ship,e,'blue');
-    //         element.addEventListener('click',(e)=>{
-
-    //            ship.position = findElement(ship,e,'yellow');
-    //            ship.column = Math.floor(ship.position[0]/10);
-    //              gameboard.placeShip(ship);
-    //              updateBoard(gameboard,'primary-container',"player-grids");
-    //              renderPlayerShips(gameboard,length-1);
-                
-    //         });
-    // }));
-    
-
-     
-    
 }
 
 
