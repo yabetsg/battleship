@@ -24,6 +24,7 @@ export default class GameBoard {
       this.board[column][this.board[column].indexOf(position[i])] = 'x'
       
     }
+    
   }
 
   recieveAttack(column, position) {

@@ -2,7 +2,7 @@ export default class Ship{
     constructor(length,column,position){
         this.length = length;
         this.hits = [];
-        this.position = position;
+        this.position = position||[];
         this.column = column;
        
     }
