@@ -9,10 +9,12 @@ export const runGame = ()=>{
     const gameboard = new GameBoard();
     const gameboard2 = new GameBoard();
     
-    createBoard(gameboard,'#primary-container');
-    createBoard(gameboard2,'#secondary-container');
-     renderShips(gameboard,5);
-    //  renderShips(gameboard,4);
+    createBoard(gameboard,'#primary-container','player-grids');
+    createBoard(gameboard2,'#secondary-container','ai-grids');
+     renderShips(gameboard,5); 
+   
+    updateBoard(gameboard,'primary-container',"player-grids");
+     renderShips(gameboard,4);
     // for(let i =0;i<4; i++){
        
     //     renderShips(gameboard,4);
@@ -20,7 +22,7 @@ export const runGame = ()=>{
      
     
 
-    //  updateBoard(gameboard,'#primary-container',".grids");
+   
     //  console.log(gameboard.board);
     //  clickEvent(player,ai);
 }

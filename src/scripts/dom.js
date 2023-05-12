@@ -1,13 +1,13 @@
 import GameBoard from "../factories/GameBoard";
 import Ship from "../factories/Ship";
-export const createBoard = (newBoard,id)=>{
+export const createBoard = (newBoard,id,className)=>{
     const container = document.querySelector(id);
     newBoard.initialize();
     let board = newBoard.board;
     board.forEach(e=>{
         e.forEach(e=>{
             const div = document.createElement('div');
-            div.classList.add('grids'); 
+            div.classList.add(className); 
             div.setAttribute('value',e);
             container.appendChild(div);
             div.value = e;
@@ -20,16 +20,16 @@ export const createBoard = (newBoard,id)=>{
 }
 export const updateBoard = (newBoard,containerID,gridID)=>{
     removeBoard(containerID,gridID);
-    const container = document.querySelector(containerID);
+    const container = document.querySelector(`#${containerID}`);
     let board = newBoard.board;
     board.forEach(e=>{
         e.forEach(e=>{
             const div = document.createElement('div');
-            div.classList.add('grids');
-              div.setAttribute('e',"e");
+            div.classList.add(gridID); 
+            div.setAttribute('value',e);
             container.appendChild(div);
-           
-            div.innerText = e;
+            div.value = e;
+            div.textContent = e;
             
         });
          
@@ -38,11 +38,14 @@ export const updateBoard = (newBoard,containerID,gridID)=>{
     
 }
 export const removeBoard = (containerID,gridID)=>{
-    const container = document.querySelector(containerID);
-    const grid = document.querySelectorAll(gridID);
-    grid.forEach(element=> {
-        if(container.hasChildNodes())
-        container.removeChild(element)
+    const container = document.querySelector(`#${containerID}`);
+    const grid = document.querySelectorAll(`.${gridID}`);
+    grid.forEach(element=> { 
+            
+         container.removeChild(element)
+        // if(container.hasChildNodes())
+        //  console.log(container.hasChildNodes());
+       
     });
 }
 export const clickEvent = (player,ai)=>{
@@ -110,15 +113,16 @@ const findElement= (ship,event,color)=>{
 
 export const renderShips =  (gameboard,length) =>{
     const ship = new Ship(length,0,[1,2,3]);
-    gameboard.placeShip(ship);
-    const grids = document.querySelectorAll('#primary-container>.grids');
+    // gameboard.placeShip(ship);
+    const grids = document.querySelectorAll('#primary-container>.player-grids');
     grids.forEach(element=>element.addEventListener('mouseover',(e)=>{
         
             findElement(ship,e,'blue');
-            // element.addEventListener('click',(e)=>{
-            //     findElement(ship,e,'yellow');
-            //      return;
-            // })
+            element.addEventListener('click',(e)=>{
+                findElement(ship,e,'yellow');
+                
+                return;
+            })
             
             
         
