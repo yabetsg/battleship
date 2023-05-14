@@ -1,5 +1,8 @@
 import GameBoard from "../factories/GameBoard";
 import Ship from "../factories/Ship";
+
+
+// TODO: Fix vertical ship not working
 export const createBoard = (newBoard,id,className,direction)=>{
     const container = document.querySelector(id);
     newBoard.initialize();
@@ -17,7 +20,7 @@ export const createBoard = (newBoard,id,className,direction)=>{
         });
     });
 }
-export const updateBoard = (newBoard,containerID,gridID)=>{
+export const updateBoard = (newBoard,containerID,gridID,direction)=>{
     removeBoard(containerID,gridID);
     const container = document.querySelector(`#${containerID}`);
     let board = newBoard.board;
@@ -25,7 +28,7 @@ export const updateBoard = (newBoard,containerID,gridID)=>{
         e.forEach(e=>{
             const div = document.createElement('div');
             div.classList.add(gridID); 
-          //  div.classList.add(direction); 
+           div.classList.add(direction); 
             div.setAttribute('value',e);
             container.appendChild(div);
             div.value = e;
@@ -66,24 +69,38 @@ export const clickEvent = (player,ai)=>{
         
     }));
 }
-const getCoordinates = (ship,event,color)=>{
+const getCoordinates = (ship,event,color,increment)=>{
+    if(increment >1){
+         ship.length = ship.length*10;
+    }
     let coordinate = [];
     if(ship.length===1){
         return;
     }
-    for(let i=0;i<=ship.length-1;i++){
+    for(let i=0;i<=ship.length-1;i=i+increment){ 
         document.querySelector(`div[value="${event.target.value+i}"]`).style.backgroundColor = color;
+        console.log(event.target.value+i);
         coordinate.push(event.target.value+i);
+        // if(document.querySelector(`div[value="${event.target.value+i}"]`)!=null){
+       
+        // }
+       
     }
     return coordinate;
 }
-
+const getPositions = (ship)=>{
+    
+}
 let flag = true;
+ let direction = 'horizontal';
+ let increment = 1;
 export const renderPlayerShips =  (gameboard,length) =>{
-    const grids = document.querySelectorAll('#primary-container>.player-grids');
-    const verticalGrids = document.querySelectorAll('#primary-container>.player-grids');
+    
+   console.log(direction);
+    let grids = document.querySelectorAll(`#primary-container>.${direction}`);
+    console.log(grids[1]);
     const rotateButton = document.querySelector('#rotate');
-    const ship = new Ship(length,0,[1,2,3]);
+    const ship = new Ship(length,[0,0,0],[1,2,3]);
     if(length===3){
         if(flag){
            length+=1; 
@@ -95,13 +112,14 @@ export const renderPlayerShips =  (gameboard,length) =>{
     }
     
     grids.forEach(element=>element.addEventListener('mouseover',(e)=>{
-         
-             getCoordinates(ship,e,'blue'); 
+             console.log( getCoordinates(ship,e,'blue',increment));
+             //getCoordinates(ship,e,'blue',increment);
+           
               element.addEventListener('click',(e)=>{
-               ship.position = getCoordinates(ship,e,'yellow');
+               ship.position = getCoordinates(ship,e,'yellow',increment);
                ship.column = Math.floor(ship.position[0]/10);
                  gameboard.placeShip(ship);
-                 updateBoard(gameboard,'primary-container',"player-grids");
+                 updateBoard(gameboard,'primary-container',"player-grids",direction);
                  renderPlayerShips(gameboard,length-1);
                 
             });
@@ -112,17 +130,26 @@ export const renderPlayerShips =  (gameboard,length) =>{
     
 
     grids.forEach(element=>element.addEventListener('mouseout',(e)=>{
-        getCoordinates(ship,e,'black');
+        getCoordinates(ship,e,'black',increment);
     }));  
     
     rotateButton.addEventListener('click',(e)=>{
+        increment = 10;
+        if(direction ==='horizontal'){
+            direction = 'vertical';
+        }else{
+            direction = 'horizontal';
+        }
+        //direction==='horizontal'?direction='vertical':direction='horizontal';
+    //    grids = document.querySelectorAll(`#primary-container>.${direction}`); 
         grids.forEach(element=>{
-           
             element.classList.toggle('horizontal');
             element.classList.toggle('vertical');
-        })
+        }); 
+        
+        
     });
-    
+   
 }
 
 

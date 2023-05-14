@@ -19,11 +19,13 @@ export default class GameBoard {
   placeShip(ship) {
     let column = ship.column;
     let position = ship.position;
-    
-    for (let i = 0; i < position.length; i++) {
-      this.board[column][this.board[column].indexOf(position[i])] = 'x'
+    for(let i=0; i<position.length;i++){
+       for (let j = 0; j < position.length; j++) {
+        this.board[column[i]][this.board[column[i]].indexOf(position[j])] = 'x';
       
     }
+    }
+   
     
   }
 

@@ -3,7 +3,7 @@ export default class Ship{
         this.length = length;
         this.hits = [];
         this.position = position||[];
-        this.column = column;
+        this.column = column||[];
        
     }
     hit(hitPosition){

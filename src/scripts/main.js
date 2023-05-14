@@ -12,7 +12,7 @@ export const runGame = ()=>{
     createBoard(playerBoard,'#primary-container','player-grids','horizontal');
     createBoard(aiBoard,'#secondary-container','ai-grids','horizontal');
      renderPlayerShips(playerBoard,5); 
-    renderAiShips(aiBoard)
+    renderAiShips(aiBoard);
     // renderShips(gameboard,4);
    // updateBoard(gameboard,'primary-container',"player-grids");
      
