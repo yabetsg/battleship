@@ -14,7 +14,7 @@ main{
     display: grid;
     grid-template-columns: repeat(10,var(--grid-size));
 }
-.player-grids,.ai-grids{
+.player-grids,.ai-grids,.horizontal{
     width: var(--grid-size);
     height: var(--grid-size);
     background-color:black;
