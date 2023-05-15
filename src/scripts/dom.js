@@ -2,8 +2,8 @@ import GameBoard from "../factories/GameBoard";
 import Ship from "../factories/Ship";
 
 
-// TODO: Fix vertical ship not working
-//TODO: Fix placement of ship in vertical
+// TODO: Fix ship issue where ship placement overlap
+
 export const createBoard = (newBoard,id,className,direction)=>{
     const container = document.querySelector(id);
     newBoard.initialize();
@@ -34,6 +34,7 @@ export const updateBoard = (newBoard,containerID,gridID,direction)=>{
             container.appendChild(div);
             div.value = e;
             div.textContent = e;
+            
             
         });
          
@@ -77,12 +78,21 @@ const getCoordinates = (ship,event,color,increment)=>{
         return;
     }
     for(let i=0;i<=(ship.length-1)*increment;i=i+increment){ 
-        if(document.querySelector(`div[value="${event.target.value+i}"]`)===null){
+         
+        if(event.target.value+i=='x0'){
+           
             return;
         }
+        if(document.querySelector(`div[value="${event.target.value+i}"]`)===null){
+            return;
+        }else if((event.target.value+i)=='x0'){
+            console.log('event:'+event.target.value+i);
+            return;
+        }
+    
         document.querySelector(`div[value="${event.target.value+i}"]`).style.backgroundColor = color;
         coordinate.push(event.target.value+i);
-    
+        
        
     }
     return coordinate;
@@ -90,26 +100,35 @@ const getCoordinates = (ship,event,color,increment)=>{
 const getColumns = (ship)=>{
     let columns = [];
     for(let i = 0; i<=ship.length-1; i++){
+        console.log(ship.position[i]);
         if(ship.position[i]!=null){
              columns.push(Math.floor((ship.position[i])/10));
         }
 
        
     }
-   
+  
     return columns;
+}
+const changeColor = () =>{
+    const select = Array.from(document.querySelectorAll('.player-grids'));
+    select.filter(element=>element.value==='x').forEach(element=>element.style.backgroundColor = 'transparent');
+    
+    
 }
 let flag = true;
  let direction = 'horizontal';
  let increment = 1;
  const rotateButton = document.querySelector('#rotate');
+
 export const renderPlayerShips =  (gameboard,length) =>{
     
    
     let grids = document.querySelectorAll(`#primary-container>.${direction}`);
-    console.log(grids[1]);
+    
     
     const ship = new Ship(length,[0,0,0],[1,2,3]);
+    
     if(length===3){
         if(flag){
            length+=1; 
@@ -121,32 +140,37 @@ export const renderPlayerShips =  (gameboard,length) =>{
     }
     
     grids.forEach(element=>element.addEventListener('mouseover',(e)=>{
-            
-            getCoordinates(ship,e,'blue',increment)
+            getCoordinates(ship,e,'blue',increment);
+             
               element.addEventListener('click',(e)=>{
-               ship.position = getCoordinates(ship,e,'yellow',increment);
+              
+               ship.position = getCoordinates(ship,e,'gray',increment);
                ship.column = getColumns(ship);
+                
                  gameboard.placeShip(ship);
                  updateBoard(gameboard,'primary-container',"player-grids",direction);
-                 console.log(gameboard);
+                
+                  changeColor();
                  renderPlayerShips(gameboard,length-1);
                 
             });
            
+        
            
           
     }));
     
 
     grids.forEach(element=>element.addEventListener('mouseout',(e)=>{
-        getCoordinates(ship,e,'black',increment);
+        getCoordinates(ship,e,'gray',increment);
     }));  
     
    
    
 }
+
  rotateButton.addEventListener('click',(e)=>{
-        console.log("before change: "+ direction);
+      
         if(direction ==='horizontal'){
             direction = 'vertical';
             increment = 10;
@@ -156,7 +180,7 @@ export const renderPlayerShips =  (gameboard,length) =>{
             direction = 'horizontal';
             increment = 1;
            
-            console.log('inside v');
+            
         }
         
         
