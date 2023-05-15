@@ -17,7 +17,7 @@ main{
 .player-grids,.ai-grids,.horizontal{
     width: var(--grid-size);
     height: var(--grid-size);
-    background-color:black;
-    border: 1.5px solid red;
+    background-color:gray;
+    border: 1.5px solid black;
     color: white;
 }
