@@ -3,6 +3,7 @@ import Ship from "../factories/Ship";
 
 
 // TODO: Fix vertical ship not working
+//TODO: Fix placement of ship in vertical
 export const createBoard = (newBoard,id,className,direction)=>{
     const container = document.querySelector(id);
     newBoard.initialize();
@@ -70,36 +71,44 @@ export const clickEvent = (player,ai)=>{
     }));
 }
 const getCoordinates = (ship,event,color,increment)=>{
-    if(increment >1){
-         ship.length = ship.length*10;
-    }
+    
     let coordinate = [];
     if(ship.length===1){
         return;
     }
-    for(let i=0;i<=ship.length-1;i=i+increment){ 
+    for(let i=0;i<=(ship.length-1)*increment;i=i+increment){ 
+        if(document.querySelector(`div[value="${event.target.value+i}"]`)===null){
+            return;
+        }
         document.querySelector(`div[value="${event.target.value+i}"]`).style.backgroundColor = color;
-        console.log(event.target.value+i);
         coordinate.push(event.target.value+i);
-        // if(document.querySelector(`div[value="${event.target.value+i}"]`)!=null){
-       
-        // }
+    
        
     }
     return coordinate;
 }
-const getPositions = (ship)=>{
-    
+const getColumns = (ship)=>{
+    let columns = [];
+    for(let i = 0; i<=ship.length-1; i++){
+        if(ship.position[i]!=null){
+             columns.push(Math.floor((ship.position[i])/10));
+        }
+
+       
+    }
+   
+    return columns;
 }
 let flag = true;
  let direction = 'horizontal';
  let increment = 1;
+ const rotateButton = document.querySelector('#rotate');
 export const renderPlayerShips =  (gameboard,length) =>{
     
-   console.log(direction);
+   
     let grids = document.querySelectorAll(`#primary-container>.${direction}`);
     console.log(grids[1]);
-    const rotateButton = document.querySelector('#rotate');
+    
     const ship = new Ship(length,[0,0,0],[1,2,3]);
     if(length===3){
         if(flag){
@@ -112,14 +121,14 @@ export const renderPlayerShips =  (gameboard,length) =>{
     }
     
     grids.forEach(element=>element.addEventListener('mouseover',(e)=>{
-             console.log( getCoordinates(ship,e,'blue',increment));
-             //getCoordinates(ship,e,'blue',increment);
-           
+            
+            getCoordinates(ship,e,'blue',increment)
               element.addEventListener('click',(e)=>{
                ship.position = getCoordinates(ship,e,'yellow',increment);
-               ship.column = Math.floor(ship.position[0]/10);
+               ship.column = getColumns(ship);
                  gameboard.placeShip(ship);
                  updateBoard(gameboard,'primary-container',"player-grids",direction);
+                 console.log(gameboard);
                  renderPlayerShips(gameboard,length-1);
                 
             });
@@ -133,36 +142,37 @@ export const renderPlayerShips =  (gameboard,length) =>{
         getCoordinates(ship,e,'black',increment);
     }));  
     
-    rotateButton.addEventListener('click',(e)=>{
-        increment = 10;
+   
+   
+}
+ rotateButton.addEventListener('click',(e)=>{
+        console.log("before change: "+ direction);
         if(direction ==='horizontal'){
             direction = 'vertical';
-        }else{
+            increment = 10;
+            
+            console.log('inside h');
+        }else if(direction ==='vertical'){
             direction = 'horizontal';
+            increment = 1;
+           
+            console.log('inside v');
         }
-        //direction==='horizontal'?direction='vertical':direction='horizontal';
-    //    grids = document.querySelectorAll(`#primary-container>.${direction}`); 
-        grids.forEach(element=>{
-            element.classList.toggle('horizontal');
-            element.classList.toggle('vertical');
-        }); 
         
         
     });
-   
-}
-
 
 
 
 
 
 export const renderAiShips =  (gameboard) =>{
-    const ship = new Ship(5,0,[1,2,3,4,5]);
-    const ship2 = new Ship(4,7,[73,74,75,76]);
-    const ship3 = new Ship(3,2,[22,23,24]);
-    const ship4 = new Ship(3,4,[44,45,46]);
-    const ship5 = new Ship(2,9,[91,92]);
+    const ship = new Ship(5,[0,0,0,0,0],[1,2,3,4,5]);
+    const ship2 = new Ship(4,[7,7,7,7],[73,74,75,76]);
+    const ship3 = new Ship(3,[2,2,2],[22,23,24]);
+    const ship4 = new Ship(3,[4,4,4],[44,45,46]);
+    const ship5 = new Ship(2,[8,9],[81,91]);
+    
     gameboard.placeShip(ship);
     gameboard.placeShip(ship2);
     gameboard.placeShip(ship3);
