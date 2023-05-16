@@ -5,8 +5,8 @@ export default class GameBoard {
     this.hits = [[]];
   }
 
-  initialize() {
-    let count = 0;
+  initialize(count) {
+    
     for (let i = 0; i < 10; i++) {
       this.board[i] = [];
       for (let j = 0; j < 10; j++) {
@@ -15,6 +15,8 @@ export default class GameBoard {
       }
     }
   }
+  
+
 
   placeShip(ship) {
     let column = ship.column;

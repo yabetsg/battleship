@@ -8,9 +8,10 @@ export const runGame = ()=>{
     const ai = new Player();
     const playerBoard = new GameBoard();
     const aiBoard = new GameBoard();
-    
+    playerBoard.initialize(0);
+    aiBoard.initialize(100);
     createBoard(playerBoard,'#primary-container','player-grids','horizontal');
-    createBoard(aiBoard,'#secondary-container','ai-grids','horizontal');
+    createBoard(aiBoard,'#secondary-container','ai-grids','x');
      renderPlayerShips(playerBoard,5); 
     renderAiShips(aiBoard);
     // renderShips(gameboard,4);

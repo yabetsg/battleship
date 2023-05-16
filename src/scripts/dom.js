@@ -6,7 +6,7 @@ import Ship from "../factories/Ship";
 
 export const createBoard = (newBoard,id,className,direction)=>{
     const container = document.querySelector(id);
-    newBoard.initialize();
+    //newBoard.initialize();
     let board = newBoard.board;
     board.forEach(e=>{
         e.forEach(e=>{
@@ -86,7 +86,7 @@ const getCoordinates = (ship,event,color,increment)=>{
         if(document.querySelector(`div[value="${event.target.value+i}"]`)===null){
             return;
         }else if((event.target.value+i)=='x0'){
-            console.log('event:'+event.target.value+i);
+            
             return;
         }
     
@@ -100,8 +100,8 @@ const getCoordinates = (ship,event,color,increment)=>{
 const getColumns = (ship)=>{
     let columns = [];
     for(let i = 0; i<=ship.length-1; i++){
-        console.log(ship.position[i]);
-        if(ship.position[i]!=null){
+        
+        if(ship.position[i]){
              columns.push(Math.floor((ship.position[i])/10));
         }
 
@@ -124,7 +124,7 @@ let flag = true;
 export const renderPlayerShips =  (gameboard,length) =>{
     
    
-    let grids = document.querySelectorAll(`#primary-container>.${direction}`);
+    let grids = document.querySelectorAll(`.player-grids.${direction}`);
     
     
     const ship = new Ship(length,[0,0,0],[1,2,3]);
@@ -140,8 +140,7 @@ export const renderPlayerShips =  (gameboard,length) =>{
     }
     
     grids.forEach(element=>element.addEventListener('mouseover',(e)=>{
-            getCoordinates(ship,e,'blue',increment);
-             
+             getCoordinates(ship,e,'blue',increment);
               element.addEventListener('click',(e)=>{
               
                ship.position = getCoordinates(ship,e,'gray',increment);
@@ -175,7 +174,7 @@ export const renderPlayerShips =  (gameboard,length) =>{
             direction = 'vertical';
             increment = 10;
             
-            console.log('inside h');
+            
         }else if(direction ==='vertical'){
             direction = 'horizontal';
             increment = 1;
@@ -191,11 +190,11 @@ export const renderPlayerShips =  (gameboard,length) =>{
 
 
 export const renderAiShips =  (gameboard) =>{
-    const ship = new Ship(5,[0,0,0,0,0],[1,2,3,4,5]);
-    const ship2 = new Ship(4,[7,7,7,7],[73,74,75,76]);
-    const ship3 = new Ship(3,[2,2,2],[22,23,24]);
-    const ship4 = new Ship(3,[4,4,4],[44,45,46]);
-    const ship5 = new Ship(2,[8,9],[81,91]);
+    const ship = new Ship(5,[0,0,0,0,0],[100,102,103,104,105]);
+    const ship2 = new Ship(4,[7,7,7,7],[173,174,175,176]);
+    const ship3 = new Ship(3,[2,2,2],[122,123,124]);
+    const ship4 = new Ship(3,[4,4,4],[144,145,146]);
+    const ship5 = new Ship(2,[8,9],[181,191]);
     
     gameboard.placeShip(ship);
     gameboard.placeShip(ship2);
