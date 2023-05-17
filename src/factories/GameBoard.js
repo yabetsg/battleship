@@ -3,6 +3,7 @@ export default class GameBoard {
     this.board = board || [];
     this.missed = [[]];
     this.hits = [[]];
+    
   }
 
   initialize(count) {
@@ -21,15 +22,67 @@ export default class GameBoard {
   placeShip(ship) {
     let column = ship.column;
     let position = ship.position;
+    
+   
     for(let i=0; i<position.length;i++){
        for (let j = 0; j < position.length; j++) {
-        this.board[column[i]][this.board[column[i]].indexOf(position[j])] = 'x';
+        // if((this.board[column[i]+1][this.board[column[i]+1].indexOf(position[j]+10)])!='x'){
+          this.board[column[i]][this.board[column[i]].indexOf(position[j])] = 'x';
+        
+        // }
+    }
+   }
+   
+  }
+  checkIfOutOfBound = (event,increment)=>{
+    let ship = this.ship;
+    if(increment ===1){
+        switch(true){ 
+             case ship.length===5 && outOfBound5.includes(event.target.value%10):
+                 return true;
+             case ship.length===4 && outOfBound4.includes(event.target.value%10):
+                 return true;
+             case ship.length===3 && outOfBound3.includes(event.target.value%10):
+                 return true;
+             case ship.length===2 && outOfBound2.includes(event.target.value%10):
+                     return true;
+      } 
+     }
+     if(increment ===10){
+         switch(true){ 
+              case ship.length===5 && outOfBound5.includes(Math.floor(event.target.value/10)):
+                  return;
+              case ship.length===4 && outOfBound4.includes(Math.floor(event.target.value/10)):
+                  return;
+              case ship.length===3 && outOfBound3.includes(Math.floor(event.target.value/10)):
+                  return;
+              case ship.length===2 && outOfBound2.includes(Math.floor(event.target.value/10)):
+                    return;
+       } 
+      }
+}
+  // nextShip(ship) {
+  //   let column = ship.column;
+  //   let position = ship.position;
+  //   console.log(column[0]);
+  //   console.log(position[0]+10);
+  //   for(let i=0; i<position.length;i++){
+  //      for (let j = 0; j < position.length; j++) {
+  //       let index = (this.board[column[0]+1][this.board[column[0]+1].indexOf(position[0]+10)]);
+  //        //console.log('index:'+index);
+  //      // // console.log(this.board[column[i]][index[j]]);
+  //         //this.board[column[i]][this.board[column[i]].indexOf(position[j])] = 'x';
       
-    }
-    }
+        
+      
+  //   }
+  //   }
    
     
-  }
+  // }
+  
+
+  
 
   recieveAttack(column, position) {
     if (this.board[column][position] === "x") {

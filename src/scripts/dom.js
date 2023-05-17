@@ -6,8 +6,9 @@ import Ship from "../factories/Ship";
 
 export const createBoard = (newBoard,id,className,direction)=>{
     const container = document.querySelector(id);
-    //newBoard.initialize();
+    
     let board = newBoard.board;
+    console.log(board);
     board.forEach(e=>{
         e.forEach(e=>{
             const div = document.createElement('div');
@@ -71,39 +72,80 @@ export const clickEvent = (player,ai)=>{
         
     }));
 }
+
+const checkIfOutOfBound = (ship,event,increment)=>{
+    let outOfBound5 = [6,7,8,9];
+     let outOfBound4 = [7,8,9];
+     let outOfBound3 = [8,9];
+     let outOfBound2 = [9];
+    
+    if(increment ===1){
+        switch(true){ 
+             case ship.length===5 && outOfBound5.includes(event.target.value%10):
+                 return true;
+             case ship.length===4 && outOfBound4.includes(event.target.value%10):
+                 return true;
+             case ship.length===3 && outOfBound3.includes(event.target.value%10):
+                 return true;
+             case ship.length===2 && outOfBound2.includes(event.target.value%10):
+                 return true;
+      } 
+     }
+     if(increment ===10){
+         switch(true){ 
+              case ship.length===5 && outOfBound5.includes(Math.floor(event.target.value/10)):
+                  return true;
+              case ship.length===4 && outOfBound4.includes(Math.floor(event.target.value/10)):
+                  return true;
+              case ship.length===3 && outOfBound3.includes(Math.floor(event.target.value/10)):
+                  return true;
+              case ship.length===2 && outOfBound2.includes(Math.floor(event.target.value/10)):
+                    return true;
+       } 
+      }
+}
 const getCoordinates = (ship,event,color,increment)=>{
-    
-    let coordinate = [];
-    if(ship.length===1){
+  
+
+  let coordinate = [];
+  if (ship.length === 1) {
+    return;
+  }
+  for (let i = 0; i <= (ship.length - 1) * increment; i = i + increment) {
+     if(checkIfOutOfBound(ship,event,increment)) return;
+   
+    if (ship.length === 5) {
+      if (event.target.value % 10 === 6) {
         return;
+      }
     }
-    for(let i=0;i<=(ship.length-1)*increment;i=i+increment){ 
-         
-        if(event.target.value+i=='x0'){
-           
-            return;
-        }
-        if(document.querySelector(`div[value="${event.target.value+i}"]`)===null){
-            return;
-        }else if((event.target.value+i)=='x0'){
-            
-            return;
-        }
-    
-        document.querySelector(`div[value="${event.target.value+i}"]`).style.backgroundColor = color;
-        coordinate.push(event.target.value+i);
-        
-       
+    if (event.target.value + i == "x0") {
+      return;
     }
-    return coordinate;
+    if (
+      document.querySelector(`div[value="${event.target.value + i}"]`) === null
+    ) {
+      return;
+    } else if (event.target.value + i == "x0") {
+      return;
+    }
+
+    document.querySelector(
+      `div[value="${event.target.value + i}"]`
+    ).style.backgroundColor = color;
+    coordinate.push(event.target.value + i);
+  }
+  return coordinate;
 }
 const getColumns = (ship)=>{
     let columns = [];
     for(let i = 0; i<=ship.length-1; i++){
         
-        if(ship.position[i]){
+          if(ship.position[i]){
              columns.push(Math.floor((ship.position[i])/10));
-        }
+        }  
+        
+        
 
        
     }
@@ -138,9 +180,21 @@ export const renderPlayerShips =  (gameboard,length) =>{
     if(length<=0){
         return;
     }
-    
+    const checkNearShips =(board,ship)=>{
+        let position = ship.position;
+        let column = ship.column;
+        for(let i =0; i<ship.length;i++){
+            for(let j = 0; j<ship.length;j++){
+                if((board.board[column[i]][position[j]]).equals('x')){
+                    
+           } 
+           
+        }
+        }
+    }
     grids.forEach(element=>element.addEventListener('mouseover',(e)=>{
              getCoordinates(ship,e,'blue',increment);
+             
               element.addEventListener('click',(e)=>{
               
                ship.position = getCoordinates(ship,e,'gray',increment);
@@ -148,15 +202,18 @@ export const renderPlayerShips =  (gameboard,length) =>{
                 
                  gameboard.placeShip(ship);
                  updateBoard(gameboard,'primary-container',"player-grids",direction);
-                
+                 
+                 
+                 
                   changeColor();
-                 renderPlayerShips(gameboard,length-1);
+                  
+                 
+                renderPlayerShips(gameboard,length-1);
+                  
+               
                 
             });
            
-        
-           
-          
     }));
     
 
