@@ -34,8 +34,33 @@ export default class GameBoard {
    }
    
   }
-  
- 
+  checkIfOutOfBound = (event,increment)=>{
+    let ship = this.ship;
+    if(increment ===1){
+        switch(true){ 
+             case ship.length===5 && outOfBound5.includes(event.target.value%10):
+                 return true;
+             case ship.length===4 && outOfBound4.includes(event.target.value%10):
+                 return true;
+             case ship.length===3 && outOfBound3.includes(event.target.value%10):
+                 return true;
+             case ship.length===2 && outOfBound2.includes(event.target.value%10):
+                     return true;
+      } 
+     }
+     if(increment ===10){
+         switch(true){ 
+              case ship.length===5 && outOfBound5.includes(Math.floor(event.target.value/10)):
+                  return;
+              case ship.length===4 && outOfBound4.includes(Math.floor(event.target.value/10)):
+                  return;
+              case ship.length===3 && outOfBound3.includes(Math.floor(event.target.value/10)):
+                  return;
+              case ship.length===2 && outOfBound2.includes(Math.floor(event.target.value/10)):
+                    return;
+       } 
+      }
+}
   // nextShip(ship) {
   //   let column = ship.column;
   //   let position = ship.position;
