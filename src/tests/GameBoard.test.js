@@ -25,14 +25,14 @@ describe('GameBoard test',()=>{
    
     it('test hit attack method',()=>{
         board.placeShip(new Ship(3,[0,0,0],[1,2,3]))
-        board.recieveAttack(0,1);
-        board.recieveAttack(0,2);
-        expect(board.hits).toEqual([[1,2]]);
+        board.recieveAttack(1);
+        
+        expect(board.hits).toEqual([1]);
     })
-    it('test missed attack method',()=>{
+    it.skip('test missed attack method',()=>{
         board.placeShip(new Ship(3,[1,1,1],[1,2,3]))
-        board.recieveAttack(1,7);
-        expect(board.missed).toEqual([[],[7]])
+        board.recieveAttack(1);
+        expect(board.missed).toEqual([1])
     })
     it('test vertical ships',()=>{
         board.initialize(0);

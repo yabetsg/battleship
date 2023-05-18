@@ -4,8 +4,10 @@ export class Player{
         this.position = this.position;
     }
   
-    autoPlay(){
+    autoPlay(grid){
+        
         let random = Math.floor(Math.random()*10);
-        return random;
+        
+        return grid[random];
     }
 }

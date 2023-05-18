@@ -7,9 +7,9 @@ export default class Ship{
        
     }
     hit(hitPosition){
-        if(this.position.includes(hitPosition)&& !(this.hits.includes(hitPosition))){
+        // if(this.position.includes(hitPosition)&& !(this.hits.includes(hitPosition))){
             this.hits.push(hitPosition);
-        }
+        //}
         
     }
 

@@ -1,11 +1,13 @@
 import GameBoard from "../factories/GameBoard";
 import { Player } from "../factories/Player"
 import Ship from "../factories/Ship";
-import { clickEvent, createBoard, removeBoard, renderAiShips, renderPlayerShips, updateBoard } from "./dom";
+import { clickEvent, createBoard, removeBoard, renderAiShips, renderAttack, renderPlayerShips, updateBoard , renderAiAttack} from "./dom";
 
 export const runGame = ()=>{
     const player = new Player();
     const ai = new Player();
+   
+
     const playerBoard = new GameBoard();
     const aiBoard = new GameBoard();
     playerBoard.initialize(0);
@@ -14,6 +16,9 @@ export const runGame = ()=>{
     createBoard(aiBoard,'#secondary-container','ai-grids','x');
      renderPlayerShips(playerBoard,5); 
     renderAiShips(aiBoard);
+   
+    renderAiAttack(aiBoard,playerBoard);
+    
     // renderShips(gameboard,4);
    // updateBoard(gameboard,'primary-container',"player-grids");
      

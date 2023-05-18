@@ -1,4 +1,5 @@
 import GameBoard from "../factories/GameBoard";
+import { Player } from "../factories/Player";
 import Ship from "../factories/Ship";
 
 
@@ -180,18 +181,18 @@ export const renderPlayerShips =  (gameboard,length) =>{
     if(length<=0){
         return;
     }
-    const checkNearShips =(board,ship)=>{
-        let position = ship.position;
-        let column = ship.column;
-        for(let i =0; i<ship.length;i++){
-            for(let j = 0; j<ship.length;j++){
-                if((board.board[column[i]][position[j]]).equals('x')){
+    // const checkNearShips =(board,ship)=>{
+    //     let position = ship.position;
+    //     let column = ship.column;
+    //     for(let i =0; i<ship.length;i++){
+    //         for(let j = 0; j<ship.length;j++){
+    //             if((board.board[column[i]][position[j]]).equals('x')){
                     
-           } 
+    //        } 
            
-        }
-        }
-    }
+    //     }
+    //     }
+    // }
     grids.forEach(element=>element.addEventListener('mouseover',(e)=>{
              getCoordinates(ship,e,'blue',increment);
              
@@ -224,6 +225,76 @@ export const renderPlayerShips =  (gameboard,length) =>{
    
    
 }
+export const renderAttack = (board,ai,player)=>{
+    player.turn = true;
+    renderPlayerAttack(board,player);
+    renderAiAttack(board,ai);
+}
+let turn = true;
+export const renderAiAttack = (aiBoard,playerBoard) =>{
+    let ai;
+
+    const player = new Player();
+    
+    const playerGrids = document.querySelectorAll('.player-grids');
+   let randomlyPickedGrid = player.autoPlay(playerGrids);
+    // const randomlyPickedGrid = ai.autoPlay(playerGrids);
+    let gridValue;
+    const aiGrids = document.querySelectorAll('.ai-grids');
+    const event = new Event('click');
+        //  console.log(randomlyPickedGrid);
+    
+        
+        aiGrids.forEach(element=>element.addEventListener('click',(e)=>{
+             ai = new Player();
+              randomlyPickedGrid = ai.autoPlay(playerGrids);
+              gridValue = randomlyPickedGrid.value;
+            
+            if(e.target.value === 'x'){
+                aiBoard.recieveAttack(e.target.value);
+                element.style.backgroundColor = 'red';
+              
+                randomlyPickedGrid.dispatchEvent(event);
+            }else {
+                element.style.backgroundColor = 'green';
+                
+                randomlyPickedGrid.dispatchEvent(event);
+            }
+            
+        }));
+        
+//TODO: !! Fix v
+         
+       randomlyPickedGrid.addEventListener('click',(e)=>{
+        
+        console.log('inside ai');
+        if(gridValue=== 'x'){
+            playerBoard.recieveAttack(gridValue);
+            randomlyPickedGrid.style.backgroundColor = 'red';
+            turn = false;
+            player.turn = true;
+
+        }else{
+            randomlyPickedGrid.style.backgroundColor = 'green';
+        }
+     }); 
+    
+    
+    }
+    
+
+export const renderPlayerAttack = (board)=>{
+    const aiGrids = document.querySelectorAll('.ai-grids');
+    aiGrids.forEach(element=>element.addEventListener('click',(e)=>{
+        if(e.target.value === 'x'){
+            board.recieveAttack(e.target.value);
+            element.style.backgroundColor = 'red';
+        }else {
+            element.style.backgroundColor = 'green';
+        }
+        
+    }));
+}
 
  rotateButton.addEventListener('click',(e)=>{
       
@@ -247,7 +318,7 @@ export const renderPlayerShips =  (gameboard,length) =>{
 
 
 export const renderAiShips =  (gameboard) =>{
-    const ship = new Ship(5,[0,0,0,0,0],[100,102,103,104,105]);
+    const ship = new Ship(5,[0,0,0,0,0],[101,102,103,104,105]);
     const ship2 = new Ship(4,[7,7,7,7],[173,174,175,176]);
     const ship3 = new Ship(3,[2,2,2],[122,123,124]);
     const ship4 = new Ship(3,[4,4,4],[144,145,146]);
@@ -260,5 +331,6 @@ export const renderAiShips =  (gameboard) =>{
     gameboard.placeShip(ship5);
     updateBoard(gameboard,'secondary-container',"ai-grids");
 }
+
 
 
