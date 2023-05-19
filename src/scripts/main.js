@@ -12,12 +12,17 @@ export const runGame = ()=>{
     const aiBoard = new GameBoard();
     playerBoard.initialize(0);
     aiBoard.initialize(100);
+    
     createBoard(playerBoard,'#primary-container','player-grids','horizontal');
     createBoard(aiBoard,'#secondary-container','ai-grids','x');
-     renderPlayerShips(playerBoard,5); 
+    
     renderAiShips(aiBoard);
+    renderPlayerShips(playerBoard,5,aiBoard); 
+    
+       
+    //  renderAttack(aiBoard,playerBoard);
+    
    
-    renderAttack(aiBoard,playerBoard);
     
     // renderShips(gameboard,4);
    // updateBoard(gameboard,'primary-container',"player-grids");

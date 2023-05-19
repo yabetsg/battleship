@@ -3,7 +3,7 @@ export default class GameBoard {
     this.board = board || [];
     this.missed = [[]];
     this.hits = [];
-    
+    this.allow = false;
   }
 
   initialize(count) {
@@ -43,7 +43,9 @@ export default class GameBoard {
     
   }
 
-  
+  allowAttack(){
+    return this.allow;
+  }
 
   // recieveAttack(column, position) {
   //   for(let i=0; i<position.length; i++){

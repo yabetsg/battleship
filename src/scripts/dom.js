@@ -9,7 +9,7 @@ export const createBoard = (newBoard,id,className,direction)=>{
     const container = document.querySelector(id);
     
     let board = newBoard.board;
-    console.log(board);
+    
     board.forEach(e=>{
         e.forEach(e=>{
             const div = document.createElement('div');
@@ -146,8 +146,6 @@ const getColumns = (ship)=>{
              columns.push(Math.floor((ship.position[i])/10));
         }  
         
-        
-
        
     }
   
@@ -164,9 +162,9 @@ let flag = true;
  let increment = 1;
  const rotateButton = document.querySelector('#rotate');
 
-export const renderPlayerShips =  (gameboard,length) =>{
+export const renderPlayerShips =   (gameboard,length,aiBoard) =>{
     
-   
+    // console.log(length);
     let grids = document.querySelectorAll(`.player-grids.${direction}`);
     
     
@@ -178,21 +176,15 @@ export const renderPlayerShips =  (gameboard,length) =>{
            flag=false;
         } 
     }
-    if(length<=0){
+    if(length<=1){
+        console.log('am i ever here????');
+        console.log(gameboard);
+        console.log(aiBoard);
+        renderAttack(aiBoard,gameboard);
+        gameboard.allow = true;
         return;
     }
-    // const checkNearShips =(board,ship)=>{
-    //     let position = ship.position;
-    //     let column = ship.column;
-    //     for(let i =0; i<ship.length;i++){
-    //         for(let j = 0; j<ship.length;j++){
-    //             if((board.board[column[i]][position[j]]).equals('x')){
-                    
-    //        } 
-           
-    //     }
-    //     }
-    // }
+     
     grids.forEach(element=>element.addEventListener('mouseover',(e)=>{
              getCoordinates(ship,e,'blue',increment);
              
@@ -206,7 +198,7 @@ export const renderPlayerShips =  (gameboard,length) =>{
                  
                  
                  
-                  changeColor();
+                   changeColor();
                   
                  
                 renderPlayerShips(gameboard,length-1);
@@ -226,7 +218,7 @@ export const renderPlayerShips =  (gameboard,length) =>{
    
 }
 
-let turn = true;
+
 export const renderAttack = (aiBoard,playerBoard) =>{
     let ai;
     let randomlyPickedGrid;
@@ -248,6 +240,7 @@ export const renderAttack = (aiBoard,playerBoard) =>{
                 renderAiAttack(randomlyPickedGrid,gridValue,playerBoard);
             }else {
                 element.style.backgroundColor = 'green';
+                renderAiAttack(randomlyPickedGrid,gridValue,playerBoard);
             }
             
         }));
@@ -262,9 +255,12 @@ const renderAiAttack = (randomlyPickedGrid,gridValue,playerBoard)=>{
             playerBoard.recieveAttack(gridValue);
             randomlyPickedGrid.style.backgroundColor = 'red';
             playerBoard.recieveAttack(elementValue)
+            console.log('ai red');
 
         }else{
-            randomlyPickedGrid.style.backgroundColor = 'green';
+            // randomlyPickedGrid.classList.add('green');
+             randomlyPickedGrid.style.backgroundColor = 'green';
+            console.log(randomlyPickedGrid);
         }
      });
       const event = new Event('click');
