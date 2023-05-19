@@ -225,63 +225,51 @@ export const renderPlayerShips =  (gameboard,length) =>{
    
    
 }
-export const renderAttack = (board,ai,player)=>{
-    player.turn = true;
-    renderPlayerAttack(board,player);
-    renderAiAttack(board,ai);
-}
-let turn = true;
-export const renderAiAttack = (aiBoard,playerBoard) =>{
-    let ai;
 
-    const player = new Player();
-    
-    const playerGrids = document.querySelectorAll('.player-grids');
-   let randomlyPickedGrid = player.autoPlay(playerGrids);
-    // const randomlyPickedGrid = ai.autoPlay(playerGrids);
+let turn = true;
+export const renderAttack = (aiBoard,playerBoard) =>{
+    let ai;
+    let randomlyPickedGrid;
     let gridValue;
+    const playerGrids = document.querySelectorAll('.player-grids');
     const aiGrids = document.querySelectorAll('.ai-grids');
-    const event = new Event('click');
-        //  console.log(randomlyPickedGrid);
+    
     
         
         aiGrids.forEach(element=>element.addEventListener('click',(e)=>{
-             ai = new Player();
+              const elementValue = e.target.value;
+              ai = new Player();
               randomlyPickedGrid = ai.autoPlay(playerGrids);
               gridValue = randomlyPickedGrid.value;
             
-            if(e.target.value === 'x'){
-                aiBoard.recieveAttack(e.target.value);
+            if(elementValue === 'x'){
+                aiBoard.recieveAttack(elementValue);
                 element.style.backgroundColor = 'red';
-              
-                randomlyPickedGrid.dispatchEvent(event);
+                renderAiAttack(randomlyPickedGrid,gridValue,playerBoard);
             }else {
                 element.style.backgroundColor = 'green';
-                
-                randomlyPickedGrid.dispatchEvent(event);
             }
             
         }));
         
-//TODO: !! Fix v
-         
-       randomlyPickedGrid.addEventListener('click',(e)=>{
-        
-        console.log('inside ai');
+
+    
+    }
+const renderAiAttack = (randomlyPickedGrid,gridValue,playerBoard)=>{
+    randomlyPickedGrid.addEventListener('click',(e)=>{
+        const elementValue = e.target.value;
         if(gridValue=== 'x'){
             playerBoard.recieveAttack(gridValue);
             randomlyPickedGrid.style.backgroundColor = 'red';
-            turn = false;
-            player.turn = true;
+            playerBoard.recieveAttack(elementValue)
 
         }else{
             randomlyPickedGrid.style.backgroundColor = 'green';
         }
-     }); 
-    
-    
-    }
-    
+     });
+      const event = new Event('click');
+     randomlyPickedGrid.dispatchEvent(event);
+}
 
 export const renderPlayerAttack = (board)=>{
     const aiGrids = document.querySelectorAll('.ai-grids');

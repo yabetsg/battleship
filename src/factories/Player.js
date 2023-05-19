@@ -6,7 +6,7 @@ export class Player{
   
     autoPlay(grid){
         
-        let random = Math.floor(Math.random()*10);
+        let random = Math.floor(Math.random()*100);
         
         return grid[random];
     }

@@ -17,7 +17,7 @@ export const runGame = ()=>{
      renderPlayerShips(playerBoard,5); 
     renderAiShips(aiBoard);
    
-    renderAiAttack(aiBoard,playerBoard);
+    renderAttack(aiBoard,playerBoard);
     
     // renderShips(gameboard,4);
    // updateBoard(gameboard,'primary-container',"player-grids");
