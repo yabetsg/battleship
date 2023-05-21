@@ -238,16 +238,16 @@ export const renderAttack = (playerBoard) =>{
         
         aiGrids.forEach(element=>element.addEventListener('click',(e)=>{
               const elementValue = e.target.value;
-              console.log('element:'+elementValue);
+              //console.log('element:'+elementValue);
               ai = new Player();
               randomlyPickedGrid = ai.autoPlay(playerGrids);
               gridValue = randomlyPickedGrid.value;
-              if(aiBoard.hits.length ===5){
-                console.log('player won!');
-              }
+             
             
             if(elementValue === 'x'){
+                
                 aiBoard.recieveAttack(elementValue);
+                checkIfWon(aiBoard);
                 element.style.backgroundColor = 'red';
                 renderAiAttack(randomlyPickedGrid,gridValue,playerBoard);
                 console.log('hits:'+ aiBoard.hits.length);
@@ -259,7 +259,7 @@ export const renderAttack = (playerBoard) =>{
             
         }));
         
-        return{aiBoard}
+        
     
     }
 const renderAiAttack = (randomlyPickedGrid,gridValue,playerBoard)=>{
@@ -267,12 +267,13 @@ const renderAiAttack = (randomlyPickedGrid,gridValue,playerBoard)=>{
         const elementValue = e.target.value;
         if(gridValue=== 'x'){
             playerBoard.recieveAttack(gridValue);
+            checkIfWon(playerBoard);
             randomlyPickedGrid.style.backgroundColor = 'red';
             playerBoard.recieveAttack(elementValue)
             console.log('ai red');
 
         }else{
-            // randomlyPickedGrid.classList.add('green');
+           
              randomlyPickedGrid.style.backgroundColor = 'green';
             //console.log(randomlyPickedGrid);
         }
@@ -312,7 +313,11 @@ export const renderPlayerAttack = (board)=>{
     });
 
 
-
+const checkIfWon = (board)=>{
+    if(board.hits.length ===17){
+        console.log('player won!');
+      }
+}
 
 
 export const renderAiShips =  (gameboard) =>{

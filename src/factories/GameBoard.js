@@ -36,7 +36,7 @@ export default class GameBoard {
   }
   
  
- 
+  
   recieveAttack(position){
     
         this.hits.push(position);
