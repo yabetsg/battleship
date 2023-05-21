@@ -3,7 +3,7 @@ import { Player } from "../factories/Player";
 import Ship from "../factories/Ship";
 
 
-// TODO: Fix ship issue where ship placement overlap
+// TODO: Winning condition
 
 export const createBoard = (newBoard,id,className,direction)=>{
     const container = document.querySelector(id);
@@ -163,8 +163,9 @@ let flag = true;
  const rotateButton = document.querySelector('#rotate');
 
 export const renderPlayerShips =   (gameboard,length,aiBoard) =>{
+     
     
-    // console.log(length);
+    
     let grids = document.querySelectorAll(`.player-grids.${direction}`);
     
     
@@ -178,10 +179,16 @@ export const renderPlayerShips =   (gameboard,length,aiBoard) =>{
     }
     if(length<=1){
         console.log('am i ever here????');
-        console.log(gameboard);
-        console.log(aiBoard);
-        renderAttack(aiBoard,gameboard);
-        gameboard.allow = true;
+        //console.log(gameboard);
+      
+        //  let aiHits = renderAttack(gameboard).aiBoard.hits.length;
+        // if(aiHits === 5){
+        //     console.log('player won');
+        // }
+       renderAttack(gameboard);
+      
+      // console.log('aiHits:'+aiHits);
+        
         return;
     }
      
@@ -189,14 +196,13 @@ export const renderPlayerShips =   (gameboard,length,aiBoard) =>{
              getCoordinates(ship,e,'blue',increment);
              
               element.addEventListener('click',(e)=>{
-              
+               // renderAiShips(aiBoard)
+               console.log(aiBoard);
                ship.position = getCoordinates(ship,e,'gray',increment);
                ship.column = getColumns(ship);
                 
                  gameboard.placeShip(ship);
                  updateBoard(gameboard,'primary-container',"player-grids",direction);
-                 
-                 
                  
                    changeColor();
                   
@@ -219,33 +225,41 @@ export const renderPlayerShips =   (gameboard,length,aiBoard) =>{
 }
 
 
-export const renderAttack = (aiBoard,playerBoard) =>{
+export const renderAttack = (playerBoard) =>{
+   let aiBoard = new GameBoard();
     let ai;
     let randomlyPickedGrid;
     let gridValue;
     const playerGrids = document.querySelectorAll('.player-grids');
     const aiGrids = document.querySelectorAll('.ai-grids');
+   
     
     
         
         aiGrids.forEach(element=>element.addEventListener('click',(e)=>{
               const elementValue = e.target.value;
+              console.log('element:'+elementValue);
               ai = new Player();
               randomlyPickedGrid = ai.autoPlay(playerGrids);
               gridValue = randomlyPickedGrid.value;
+              if(aiBoard.hits.length ===5){
+                console.log('player won!');
+              }
             
             if(elementValue === 'x'){
                 aiBoard.recieveAttack(elementValue);
                 element.style.backgroundColor = 'red';
                 renderAiAttack(randomlyPickedGrid,gridValue,playerBoard);
+                console.log('hits:'+ aiBoard.hits.length);
             }else {
                 element.style.backgroundColor = 'green';
                 renderAiAttack(randomlyPickedGrid,gridValue,playerBoard);
+                
             }
             
         }));
         
-
+        return{aiBoard}
     
     }
 const renderAiAttack = (randomlyPickedGrid,gridValue,playerBoard)=>{
@@ -260,7 +274,7 @@ const renderAiAttack = (randomlyPickedGrid,gridValue,playerBoard)=>{
         }else{
             // randomlyPickedGrid.classList.add('green');
              randomlyPickedGrid.style.backgroundColor = 'green';
-            console.log(randomlyPickedGrid);
+            //console.log(randomlyPickedGrid);
         }
      });
       const event = new Event('click');
@@ -309,11 +323,16 @@ export const renderAiShips =  (gameboard) =>{
     const ship5 = new Ship(2,[8,9],[181,191]);
     
     gameboard.placeShip(ship);
+    updateBoard(gameboard,'secondary-container',"ai-grids","horizontal");
     gameboard.placeShip(ship2);
+    updateBoard(gameboard,'secondary-container',"ai-grids","horizontal");
     gameboard.placeShip(ship3);
+    updateBoard(gameboard,'secondary-container',"ai-grids","horizontal");
     gameboard.placeShip(ship4);
+    updateBoard(gameboard,'secondary-container',"ai-grids","horizontal");
     gameboard.placeShip(ship5);
-    updateBoard(gameboard,'secondary-container',"ai-grids");
+    updateBoard(gameboard,'secondary-container',"ai-grids","horizontal");
+    
 }
 
 

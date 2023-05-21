@@ -14,11 +14,12 @@ export const runGame = ()=>{
     aiBoard.initialize(100);
     
     createBoard(playerBoard,'#primary-container','player-grids','horizontal');
-    createBoard(aiBoard,'#secondary-container','ai-grids','x');
-    
+    createBoard(aiBoard,'#secondary-container','ai-grids','horizontal');
+    //console.log(aiBoard);
     renderAiShips(aiBoard);
+    //console.log(aiBoard);
     renderPlayerShips(playerBoard,5,aiBoard); 
-    
+  //  console.log(aiBoard);
        
     //  renderAttack(aiBoard,playerBoard);
     
