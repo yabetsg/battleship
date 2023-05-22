@@ -1,5 +1,5 @@
 :root{
-    --grid-size:30px;
+    --grid-size:50px;
 }
 
 *{
@@ -8,7 +8,18 @@
 }
 main{
     display: flex;
+    flex-direction: column;
     gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+header{
+    font-family: 'Allerta Stencil';
+    /* font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; */
+    font-size: 4.5rem;
+    background-image: linear-gradient(black,rgb(209, 195, 195));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 #primary-container,#secondary-container{
     display: grid;
@@ -17,9 +28,22 @@ main{
 .player-grids,.ai-grids,.horizontal{
     width: var(--grid-size);
     height: var(--grid-size);
-    background-color:gray;
-    border: 1.5px solid black;
-    color: white;
+    background-color:rgb(246, 236, 236);
+    border: 1.5px solid rgb(47, 138, 202);
+    color: transparent;
+}
+.grid-container{
+    display: flex;
+    gap: 20px;
+    
+}
+#rotate{
+    width: 70px;
+    height: 40px;
+    align-self: flex-end;
+    justify-self: center;
+    font-size: large;
+    font-weight: bold;
 }
 .green{
     background-color: green;

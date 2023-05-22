@@ -13,8 +13,8 @@ export default class Ship{
         
     }
 
-    isSunk(){
-        if(this.length === this.hits.length){
+    allShipSunk(){
+        if(this.hits.length===16){
             return true;
         }
         return false;

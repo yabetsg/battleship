@@ -3,7 +3,7 @@ import { Player } from "../factories/Player";
 import Ship from "../factories/Ship";
 
 
-// TODO: Winning condition
+// TODO: 
 
 export const createBoard = (newBoard,id,className,direction)=>{
     const container = document.querySelector(id);
@@ -178,16 +178,12 @@ export const renderPlayerShips =   (gameboard,length,aiBoard) =>{
         } 
     }
     if(length<=1){
-        console.log('am i ever here????');
-        //console.log(gameboard);
+        
       
-        //  let aiHits = renderAttack(gameboard).aiBoard.hits.length;
-        // if(aiHits === 5){
-        //     console.log('player won');
-        // }
+       
        renderAttack(gameboard);
       
-      // console.log('aiHits:'+aiHits);
+    
         
         return;
     }
@@ -196,7 +192,7 @@ export const renderPlayerShips =   (gameboard,length,aiBoard) =>{
              getCoordinates(ship,e,'blue',increment);
              
               element.addEventListener('click',(e)=>{
-               // renderAiShips(aiBoard)
+               
                console.log(aiBoard);
                ship.position = getCoordinates(ship,e,'gray',increment);
                ship.column = getColumns(ship);
@@ -238,7 +234,7 @@ export const renderAttack = (playerBoard) =>{
         
         aiGrids.forEach(element=>element.addEventListener('click',(e)=>{
               const elementValue = e.target.value;
-              //console.log('element:'+elementValue);
+              
               ai = new Player();
               randomlyPickedGrid = ai.autoPlay(playerGrids);
               gridValue = randomlyPickedGrid.value;
@@ -270,12 +266,12 @@ const renderAiAttack = (randomlyPickedGrid,gridValue,playerBoard)=>{
             checkIfWon(playerBoard);
             randomlyPickedGrid.style.backgroundColor = 'red';
             playerBoard.recieveAttack(elementValue)
-            console.log('ai red');
+           
 
         }else{
            
              randomlyPickedGrid.style.backgroundColor = 'green';
-            //console.log(randomlyPickedGrid);
+           
         }
      });
       const event = new Event('click');

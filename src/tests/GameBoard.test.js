@@ -29,11 +29,7 @@ describe('GameBoard test',()=>{
         
         expect(board.hits).toEqual([1]);
     })
-    it.skip('test missed attack method',()=>{
-        board.placeShip(new Ship(3,[1,1,1],[1,2,3]))
-        board.recieveAttack(1);
-        expect(board.missed).toEqual([1])
-    })
+    
     it('test vertical ships',()=>{
         board.initialize(0);
         board.placeShip(new Ship(3,[5,6,7],[55,65,75]));
