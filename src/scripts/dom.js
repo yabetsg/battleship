@@ -3,7 +3,7 @@ import { Player } from "../factories/Player";
 import Ship from "../factories/Ship";
 
 
-// TODO: random ai placement on reload
+// TODO: 
 
 export const createBoard = (newBoard,id,className,direction)=>{
     const container = document.querySelector(id);
@@ -185,19 +185,17 @@ export const renderPlayerShips =   (gameboard,length,aiBoard) =>{
              getCoordinates(ship,e,'lightblue',increment);
              
               element.addEventListener('click',(e)=>{
-               
-               ship.position = getCoordinates(ship,e,'gray',increment);
-               ship.column = getColumns(ship);
-                
-                    gameboard.placeShip(ship);
-                     updateBoard(gameboard,'primary-container',"player-grids",direction);
+               try{
+                    ship.position = getCoordinates(ship,e,'red',increment);
+                     ship.column = getColumns(ship); 
+                     gameboard.placeShip(ship);
+                     updateBoard(gameboard,'primary-container',"player-grids",direction); 
                       changeColor();
-               
+               }catch{
+                    return;
+               }
                  
                 renderPlayerShips(gameboard,length-1);
-                  
-               
-                
             });
            
     }));
@@ -303,7 +301,7 @@ export const renderPlayerAttack = (board)=>{
 
 const checkIfWon = (board)=>{
     let boardName = '';
-    if(board.hits.length ===16){
+    if(board.hits.length ===1){
           boardName =  board.name === 'aiBoard' ? 'You' : 'Computer';
       
         const winnerContainer= document.querySelector('.winner-container');
@@ -318,22 +316,51 @@ const checkIfWon = (board)=>{
       }
 }
 
+const randomizeShipPlacement = (ship,randomNumber)=>{
+    ship.column.fill(randomNumber);
+  
+    let randomPrefix = (Math.floor(Math.random()*5)).toString();
+    let parsedInt = parseInt('1'+randomNumber+ randomPrefix);
+   
+    ship.position = ship.position.map(x=>{
+        const incrementedValue = parsedInt + 1;
+        x = incrementedValue;
+        parsedInt = parsedInt+1;
+        return incrementedValue;
+    });
+}
 
+
+const randomArray = (size)=>{
+    let array = [];
+    let random = Math.floor(Math.random()*10);
+    for(let i =0; i<size; i++){
+        while(array.includes(random)){
+        random = Math.floor(Math.random()*10);
+    }
+    array.push(random);
+    }
+    return array;
+}
 export const renderAiShips =  (gameboard) =>{
+   
     const ship = new Ship(5,[0,0,0,0,0],[101,102,103,104,105]);
     const ship2 = new Ship(4,[7,7,7,7],[173,174,175,176]);
     const ship3 = new Ship(3,[2,2,2],[122,123,124]);
     const ship4 = new Ship(3,[4,4,4],[144,145,146]);
     const ship5 = new Ship(2,[8,9],[181,191]);
     
+    let random = randomArray(5);
+    randomizeShipPlacement(ship,random[0]);
+    randomizeShipPlacement(ship2,random[1]);
+    randomizeShipPlacement(ship3,random[2]);
+    randomizeShipPlacement(ship4,random[3]);
+    randomizeShipPlacement(ship5,random[4]);
+        
     gameboard.placeShip(ship);
-    updateBoard(gameboard,'secondary-container',"ai-grids","horizontal");
     gameboard.placeShip(ship2);
-    updateBoard(gameboard,'secondary-container',"ai-grids","horizontal");
     gameboard.placeShip(ship3);
-    updateBoard(gameboard,'secondary-container',"ai-grids","horizontal");
     gameboard.placeShip(ship4);
-    updateBoard(gameboard,'secondary-container',"ai-grids","horizontal");
     gameboard.placeShip(ship5);
     updateBoard(gameboard,'secondary-container',"ai-grids","horizontal");
     
