@@ -3,7 +3,7 @@ import { Player } from "../factories/Player";
 import Ship from "../factories/Ship";
 
 
-// TODO: 
+// TODO: random ai placement on reload
 
 export const createBoard = (newBoard,id,className,direction)=>{
     const container = document.querySelector(id);
@@ -61,11 +61,9 @@ export const clickEvent = (player,ai)=>{
              ai.turn = true;
              player.turn = false;
             
-            console.log('player: '+e.target.value);
              const event = new Event('click');
             element.dispatchEvent(event);
         }else if(ai.turn){
-            console.log('ai: '+ ai.autoPlay());
             ai.turn = false;
             player.turn = true;
             
@@ -115,11 +113,7 @@ const getCoordinates = (ship,event,color,increment)=>{
   for (let i = 0; i <= (ship.length - 1) * increment; i = i + increment) {
      if(checkIfOutOfBound(ship,event,increment)) return;
    
-    if (ship.length === 5) {
-      if (event.target.value % 10 === 6) {
-        return;
-      }
-    }
+    
     if (event.target.value + i == "x0") {
       return;
     }
@@ -142,9 +136,11 @@ const getColumns = (ship)=>{
     let columns = [];
     for(let i = 0; i<=ship.length-1; i++){
         
-          if(ship.position[i]){
+           if(ship.position[i]){
              columns.push(Math.floor((ship.position[i])/10));
         }  
+       
+           
         
        
     }
@@ -153,7 +149,7 @@ const getColumns = (ship)=>{
 }
 const changeColor = () =>{
     const select = Array.from(document.querySelectorAll('.player-grids'));
-    select.filter(element=>element.value==='x').forEach(element=>element.style.backgroundColor = 'transparent');
+    select.filter(element=>element.value==='x').forEach(element=>element.style.backgroundColor = 'lightblue');
     
     
 }
@@ -182,26 +178,21 @@ export const renderPlayerShips =   (gameboard,length,aiBoard) =>{
       
        
        renderAttack(gameboard);
-      
-    
-        
         return;
     }
      
     grids.forEach(element=>element.addEventListener('mouseover',(e)=>{
-             getCoordinates(ship,e,'blue',increment);
+             getCoordinates(ship,e,'lightblue',increment);
              
               element.addEventListener('click',(e)=>{
                
-               console.log(aiBoard);
                ship.position = getCoordinates(ship,e,'gray',increment);
                ship.column = getColumns(ship);
                 
-                 gameboard.placeShip(ship);
-                 updateBoard(gameboard,'primary-container',"player-grids",direction);
-                 
-                   changeColor();
-                  
+                    gameboard.placeShip(ship);
+                     updateBoard(gameboard,'primary-container',"player-grids",direction);
+                      changeColor();
+               
                  
                 renderPlayerShips(gameboard,length-1);
                   
@@ -213,7 +204,7 @@ export const renderPlayerShips =   (gameboard,length,aiBoard) =>{
     
 
     grids.forEach(element=>element.addEventListener('mouseout',(e)=>{
-        getCoordinates(ship,e,'gray',increment);
+        getCoordinates(ship,e,'rgb(232 230 230)',increment);
     }));  
     
    
@@ -223,6 +214,7 @@ export const renderPlayerShips =   (gameboard,length,aiBoard) =>{
 
 export const renderAttack = (playerBoard) =>{
    let aiBoard = new GameBoard();
+   aiBoard.name = 'aiBoard';
     let ai;
     let randomlyPickedGrid;
     let gridValue;
@@ -244,11 +236,11 @@ export const renderAttack = (playerBoard) =>{
                 
                 aiBoard.recieveAttack(elementValue);
                 checkIfWon(aiBoard);
-                element.style.backgroundColor = 'red';
+                element.style.backgroundColor = 'rgb(248, 78, 49 )';
                 renderAiAttack(randomlyPickedGrid,gridValue,playerBoard);
-                console.log('hits:'+ aiBoard.hits.length);
+            
             }else {
-                element.style.backgroundColor = 'green';
+                element.style.backgroundColor = 'lightgreen';
                 renderAiAttack(randomlyPickedGrid,gridValue,playerBoard);
                 
             }
@@ -264,13 +256,13 @@ const renderAiAttack = (randomlyPickedGrid,gridValue,playerBoard)=>{
         if(gridValue=== 'x'){
             playerBoard.recieveAttack(gridValue);
             checkIfWon(playerBoard);
-            randomlyPickedGrid.style.backgroundColor = 'red';
+            randomlyPickedGrid.style.backgroundColor = 'rgb(248, 78, 49 )';
             playerBoard.recieveAttack(elementValue)
            
 
         }else{
            
-             randomlyPickedGrid.style.backgroundColor = 'green';
+             randomlyPickedGrid.style.backgroundColor = 'lightgreen';
            
         }
      });
@@ -283,9 +275,9 @@ export const renderPlayerAttack = (board)=>{
     aiGrids.forEach(element=>element.addEventListener('click',(e)=>{
         if(e.target.value === 'x'){
             board.recieveAttack(e.target.value);
-            element.style.backgroundColor = 'red';
+            element.style.backgroundColor = 'rgb(248, 78, 49 )';
         }else {
-            element.style.backgroundColor = 'green';
+            element.style.backgroundColor = 'lightgreen';
         }
         
     }));
@@ -310,8 +302,19 @@ export const renderPlayerAttack = (board)=>{
 
 
 const checkIfWon = (board)=>{
-    if(board.hits.length ===17){
-        console.log('player won!');
+    let boardName = '';
+    if(board.hits.length ===16){
+          boardName =  board.name === 'aiBoard' ? 'You' : 'Computer';
+      
+        const winnerContainer= document.querySelector('.winner-container');
+        winnerContainer.classList.add('show');
+        winnerContainer.firstElementChild.textContent = `${boardName} Won!!`;
+        winnerContainer.addEventListener('click',(e)=>{
+            if(e.target instanceof HTMLButtonElement){
+                location.reload();
+            }
+            
+        })
       }
 }
 

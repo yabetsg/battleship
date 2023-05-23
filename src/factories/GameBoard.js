@@ -4,6 +4,7 @@ export default class GameBoard {
     this.missed = [[]];
     this.hits = [];
     this.allow = false;
+    this.name = '';
   }
 
   initialize(count) {
@@ -47,6 +48,7 @@ export default class GameBoard {
     return this.allow;
   }
 
+  instanceName() {return this}
   // recieveAttack(column, position) {
   //   for(let i=0; i<position.length; i++){
   //     for(let j=0; j<position.length; j++){
