@@ -30,7 +30,7 @@ header{
     height: var(--grid-size);
     background-color:rgb(232 230 230);
     border: 1.5px solid rgb(147 185 211);
-    color: gray;
+    color: transparent;
 }
 .grid-container{
     display: flex;
