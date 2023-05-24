@@ -54,6 +54,7 @@ export const removeBoard = (containerID,gridID)=>{
        
     });
 }
+
 export const clickEvent = (player,ai)=>{
     const grids = document.querySelectorAll('.grids');
     grids.forEach(element=>element.addEventListener('click',(e)=>{
@@ -174,9 +175,6 @@ export const renderPlayerShips =   (gameboard,length,aiBoard) =>{
         } 
     }
     if(length<=1){
-        
-      
-       
        renderAttack(gameboard);
         return;
     }

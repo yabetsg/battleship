@@ -1,10 +1,14 @@
 :root{
-    --grid-size:50px;
+    --grid-size:45px;
 }
 
 *{
+    
     box-sizing: border-box;
     margin: 0;
+}
+body{
+    color-scheme: system;
 }
 main{
     display: flex;
@@ -14,10 +18,10 @@ main{
     align-items: center;
 }
 header{
-    font-family: 'Allerta Stencil';
+    font-family: 'Iron Lung', sans-serif;;
     /* font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; */
-    font-size: 4.5rem;
-    background-image: linear-gradient(black,rgb(209, 195, 195));
+    font-size: 9.5rem;
+    background-image: linear-gradient(rgb(120 159 172),rgb(127 127 127));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -44,6 +48,8 @@ header{
     justify-self: center;
     font-size: large;
     font-weight: bold;
+    font-family: 'Montserrat' sans-serif;
+    color:rgb(127 127 127);
 }
 .winner-container{
     display: none;
@@ -72,6 +78,13 @@ header{
     border-radius: 20px;
     border-color: gray;
 }
-.green{
-    background-color: green;
+#board-title-container{
+    display: flex;
+    width: 700px;
+    justify-content: space-between;
+    font-weight: 300;
+    font-size: 1rem;
+    font-family: 'Montserrat' sans-serif;
+    color:rgb(127 127 127);
 }
+

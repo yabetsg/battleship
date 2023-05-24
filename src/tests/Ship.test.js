@@ -22,16 +22,16 @@ describe('Ship test',()=>{
         expect(ship.hits).toEqual([4,13]);
     })
 
-    it('check if ship has sunk',()=>{
-        ship.hit(3);
-        ship.hit(4);
+    // it('check if ship has sunk',()=>{
+    //     ship.hit(3);
+    //     ship.hit(4);
        
-        expect(ship.allShipSunk()).toBeFalsy();
-    })
-    it('check if ship has not sunk',()=>{
-        ship.hit(3);
-        ship.hit(4);
+    //     expect(ship.allShipSunk()).toBeFalsy();
+    // })
+    // it('check if ship has not sunk',()=>{
+    //     ship.hit(3);
+    //     ship.hit(4);
        
-        expect(ship.allShipSunk()).toBeFalsy();
-    })
+    //     expect(ship.allShipSunk()).toBeFalsy();
+    // })
 })

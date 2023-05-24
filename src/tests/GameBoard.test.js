@@ -37,5 +37,12 @@ describe('GameBoard test',()=>{
         expect(board.board[6][5]).toEqual('x');
         expect(board.board[7][5]).toEqual('x');
     })
+
+    it('checks if ship has sunk',()=>{
+            board.hit(3);
+            board.hit(4);
+           
+            expect(board.allShipSunk()).toBeFalsy();
+        })
     
 })

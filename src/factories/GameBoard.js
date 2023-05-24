@@ -67,5 +67,11 @@ export default class GameBoard {
   //   }
     
   // }
+  allShipSunk(){
+    if(this.hits.length===16){
+        return true;
+    }
+    return false;
+}
  
 }

@@ -14,7 +14,7 @@ export default class Ship{
     }
 
     allShipSunk(){
-        if(this.hits.length===16){
+        if(this.hits.length===1){
             return true;
         }
         return false;
