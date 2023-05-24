@@ -8,70 +8,42 @@ export default class GameBoard {
   }
 
   initialize(count) {
-    
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 10; i += 1) {
       this.board[i] = [];
-      for (let j = 0; j < 10; j++) {
+      for (let j = 0; j < 10; j += 1) {
         this.board[i][j] = count;
         count++;
       }
     }
   }
-  
-
 
   placeShip(ship) {
-    let column = ship.column;
-    let position = ship.position;
-    
-   
-    for(let i=0; i<position.length;i++){
-       for (let j = 0; j < position.length; j++) {
-        // if((this.board[column[i]+1][this.board[column[i]+1].indexOf(position[j]+10)])!='x'){
-          this.board[column[i]][this.board[column[i]].indexOf(position[j])] = 'x';
-        
-        // }
+    const { column } = ship;
+    const { position } = ship;
+
+    for (let i = 0; i < position.length; i += 1) {
+      for (let j = 0; j < position.length; j += 1) {
+        this.board[column[i]][this.board[column[i]].indexOf(position[j])] = 'x';
+      }
     }
-   }
-   
-  }
-  
- 
-  
-  recieveAttack(position){
-    
-        this.hits.push(position);
-    
   }
 
-  allowAttack(){
+  recieveAttack(position) {
+    this.hits.push(position);
+  }
+
+  allowAttack() {
     return this.allow;
   }
 
-  instanceName() {return this}
-  // recieveAttack(column, position) {
-  //   for(let i=0; i<position.length; i++){
-  //     for(let j=0; j<position.length; j++){
-  //       if (this.board[column[i]][position[j]] === "x") {
-  //         if (this.hits[column[i]] === undefined) {
-  //       this.hits[column[i]] = [position[j]];
-  //     } else {
-  //       this.hits[column[i]].push(position[i]);
-  //     }
-  //   } else if (this.missed[column] === undefined) {
-  //     this.missed[column] = [position];
-  //   } else {
-  //     this.missed[column].push(position);
-  //   }
-  //     }
-  //   }
-    
-  // }
-  allShipSunk(){
-    if(this.hits.length===16){
-        return true;
+  instanceName() {
+    return this;
+  }
+
+  allShipSunk() {
+    if (this.hits.length === 16) {
+      return true;
     }
     return false;
-}
- 
+  }
 }
