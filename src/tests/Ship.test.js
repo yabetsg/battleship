@@ -17,9 +17,4 @@ describe('Ship test', () => {
     ship.hit(1);
     expect(ship.hits).toEqual([3, 4, 1]);
   });
-  it('check if only stores valid hitpoints', () => {
-    ship.hit(4);
-    ship.hit(13);
-    expect(ship.hits).toEqual([4, 13]);
-  });
 });

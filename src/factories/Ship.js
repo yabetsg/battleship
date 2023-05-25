@@ -5,6 +5,7 @@ export default class Ship {
     this.position = position || [];
     this.column = column || [];
   }
+
   hit(hitPosition) {
     this.hits.push(hitPosition);
   }

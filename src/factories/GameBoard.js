@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 export default class GameBoard {
   constructor(board) {
     this.board = board || [];
@@ -12,7 +13,7 @@ export default class GameBoard {
       this.board[i] = [];
       for (let j = 0; j < 10; j += 1) {
         this.board[i][j] = count;
-        count++;
+        count += 1;
       }
     }
   }

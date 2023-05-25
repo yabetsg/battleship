@@ -11,8 +11,6 @@ import GameBoard from '../factories/GameBoard';
 import Player from '../factories/Player';
 import Ship from '../factories/Ship';
 
-// TODO: fix issue causing multiple clicks to register multiple attacks
-
 export const createBoard = (newBoard, id, className, direction) => {
   const container = document.querySelector(id);
 
@@ -189,10 +187,12 @@ export const renderAttack = (playerBoard) => {
       aiBoard.recieveAttack(elementValue);
       checkIfWon(aiBoard);
       element.style.backgroundColor = 'rgb(248, 78, 49 )';
-      renderAiAttack(randomlyPickedGrid, gridValue, playerBoard);
+      setTimeout(renderAiAttack, 500, randomlyPickedGrid, gridValue, playerBoard);
+      //renderAiAttack(randomlyPickedGrid, gridValue, playerBoard);
     } else if (elementValue !== 'x') {
       element.style.backgroundColor = 'lightgreen';
-      renderAiAttack(randomlyPickedGrid, gridValue, playerBoard);
+      setTimeout(renderAiAttack, 500, randomlyPickedGrid, gridValue, playerBoard);
+      //renderAiAttack(randomlyPickedGrid, gridValue, playerBoard);
     }
   }));
 };
@@ -248,7 +248,7 @@ export const renderPlayerShips = (gameboard, length) => {
 const renderAiAttack = (randomlyPickedGrid, gridValue, playerBoard) => {
   let clicked = false;
   randomlyPickedGrid.addEventListener('click', (e) => {
-    if(clicked){
+    if (clicked) {
       return;
     }
     clicked = true;
@@ -279,9 +279,6 @@ const renderAiAttack = (randomlyPickedGrid, gridValue, playerBoard) => {
       storeClicks.push(elementId);
       playerBoard.recieveMiss(elementValue);
       randomlyPickedGrid.style.backgroundColor = 'lightgreen';
-    } else if (playerBoard.isMissed(elementValue)) {
-      // const event = new Event('click');
-      // randomlyPickedGrid.dispatchEvent(event);
     }
   });
 
