@@ -30,6 +30,7 @@ export const createBoard = (newBoard, id, className, direction) => {
     });
   });
 };
+
 export const updateBoard = (newBoard, containerID, gridID, direction) => {
   removeBoard(containerID, gridID);
   const container = document.querySelector(`#${containerID}`);
@@ -109,6 +110,7 @@ const checkIfOutOfBound = (ship, event, increment) => {
     }
   }
 };
+
 const getCoordinates = (ship, event, color, increment) => {
   const coordinate = [];
   if (ship.length === 1) {
@@ -145,6 +147,7 @@ const getColumns = (ship) => {
 
   return columns;
 };
+
 const changeColor = () => {
   const select = Array.from(document.querySelectorAll('.player-grids'));
   select
@@ -161,7 +164,6 @@ const randomGridPicker = (board, grids) => {
   return { key: iterator[0], value: iterator[1] };
 };
 
-// console.log(randomGridPicker(new GameBoard(), document.querySelectorAll('.player-grids')));
 const storePlayerClicks = [];
 const storeClicks = [];
 export const renderAttack = (playerBoard) => {
@@ -188,17 +190,17 @@ export const renderAttack = (playerBoard) => {
       checkIfWon(aiBoard);
       element.style.backgroundColor = 'rgb(248, 78, 49 )';
       setTimeout(renderAiAttack, 500, randomlyPickedGrid, gridValue, playerBoard);
-      //renderAiAttack(randomlyPickedGrid, gridValue, playerBoard);
     } else if (elementValue !== 'x') {
       element.style.backgroundColor = 'lightgreen';
       setTimeout(renderAiAttack, 500, randomlyPickedGrid, gridValue, playerBoard);
-      //renderAiAttack(randomlyPickedGrid, gridValue, playerBoard);
     }
   }));
 };
+
 let flag = true;
 let direction = 'horizontal';
 let increment = 1;
+
 const rotateButton = document.querySelector('#rotate');
 
 export const renderPlayerShips = (gameboard, length) => {
