@@ -18,8 +18,7 @@ main{
     align-items: center;
 }
 header{
-    font-family: 'Iron Lung', sans-serif;;
-    /* font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; */
+    font-family: 'Iron Lung', sans-serif;
     font-size: 9.5rem;
     background-image: linear-gradient(rgb(120 159 172),rgb(127 127 127));
     -webkit-background-clip: text;
@@ -34,7 +33,7 @@ header{
     height: var(--grid-size);
     background-color:rgb(232 230 230);
     border: 1.5px solid rgb(147 185 211);
-    color: gray;
+    color: transparent;
 }
 .grid-container{
     display: flex;
