@@ -1,7 +1,7 @@
 export default class GameBoard {
   constructor(board) {
     this.board = board || [];
-    this.missed = [[]];
+    this.missed = [];
     this.hits = [];
     this.allow = false;
     this.name = '';
@@ -30,6 +30,14 @@ export default class GameBoard {
 
   recieveAttack(position) {
     this.hits.push(position);
+  }
+
+  recieveMiss(position) {
+    this.missed.push(position);
+  }
+
+  isMissed(position) {
+    return this.missed.includes(position);
   }
 
   allowAttack() {

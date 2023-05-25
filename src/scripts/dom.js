@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 /* eslint-disable default-case */
 /* eslint-disable no-restricted-globals */
 /* eslint-disable radix */
@@ -152,9 +153,22 @@ const changeColor = () => {
     .filter((element) => element.value === 'x')
     .forEach((element) => (element.style.backgroundColor = 'lightblue'));
 };
+
+const randomGridPicker = (board, grids) => {
+  const randomlyPickedGrid = board.autoPlay(grids);
+  const map = new Map();
+  map.set(randomlyPickedGrid, randomlyPickedGrid.value);
+  const iterator = map.entries().next().value;
+
+  return { key: iterator[0], value: iterator[1] };
+};
+
+// console.log(randomGridPicker(new GameBoard(), document.querySelectorAll('.player-grids')));
+const storePlayerClicks = [];
+const storeClicks = [];
 export const renderAttack = (playerBoard) => {
   const aiBoard = new GameBoard();
-  const storeClicks = [];
+
   aiBoard.name = 'aiBoard';
   let ai;
   let randomlyPickedGrid;
@@ -166,11 +180,12 @@ export const renderAttack = (playerBoard) => {
     const elementValue = e.target.value;
     const elementId = e.target.id;
     ai = new Player();
-    randomlyPickedGrid = ai.autoPlay(playerGrids);
-    gridValue = randomlyPickedGrid.value;
+    const randomIterator = randomGridPicker(ai, playerGrids);
+    randomlyPickedGrid = randomIterator.key;
+    gridValue = randomIterator.value;
 
-    if (elementValue === 'x' && !storeClicks.includes(elementId)) {
-      storeClicks.push(elementId);
+    if (elementValue === 'x' && !storePlayerClicks.includes(elementId)) {
+      storePlayerClicks.push(elementId);
       aiBoard.recieveAttack(elementValue);
       checkIfWon(aiBoard);
       element.style.backgroundColor = 'rgb(248, 78, 49 )';
@@ -231,21 +246,45 @@ export const renderPlayerShips = (gameboard, length) => {
 };
 
 const renderAiAttack = (randomlyPickedGrid, gridValue, playerBoard) => {
-  const storeClicks = [];
+  let clicked = false;
   randomlyPickedGrid.addEventListener('click', (e) => {
-    const elementValue = e.target.value;
-    const elementId = e.target.id;
-    console.log(elementId);
+    if(clicked){
+      return;
+    }
+    clicked = true;
+    let elementValue = e.target.value;
+    let elementId = e.target.id;
+
+    if (storeClicks.includes(elementId)) {
+      const grids = document.querySelectorAll('.player-grids');
+      const ai = new Player();
+      let random = randomGridPicker(ai, grids);
+
+      while (storeClicks.includes(random.key.id)) {
+        random = randomGridPicker(ai, grids);
+      }
+
+      randomlyPickedGrid = random.key;
+      gridValue = random.value;
+      elementValue = random.value;
+      elementId = random.key.id;
+    }
+
     if (gridValue === 'x' && !storeClicks.includes(elementId)) {
       storeClicks.push(elementId);
       playerBoard.recieveAttack(gridValue);
       checkIfWon(playerBoard);
-      randomlyPickedGrid.style.backgroundColor = 'rgb(248, 78, 49 )';
-      playerBoard.recieveAttack(elementValue);
-    } else if (elementValue !== 'x') {
+      randomlyPickedGrid.style.backgroundColor = 'rgb(248, 78, 49)';
+    } else if (elementValue !== 'x' && !playerBoard.isMissed(elementValue)) {
+      storeClicks.push(elementId);
+      playerBoard.recieveMiss(elementValue);
       randomlyPickedGrid.style.backgroundColor = 'lightgreen';
+    } else if (playerBoard.isMissed(elementValue)) {
+      // const event = new Event('click');
+      // randomlyPickedGrid.dispatchEvent(event);
     }
   });
+
   const event = new Event('click');
   randomlyPickedGrid.dispatchEvent(event);
 };
